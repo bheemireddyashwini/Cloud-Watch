@@ -14,7 +14,7 @@ const ForecastCards = () => {
         {forecast.map((item, index) => {
           const { dt_txt, main, wind, weather } = item;
           
-          // Format the date to display as "DD MMMM YYYY" (e.g., "01 December 2024")
+      
           const date = new Date(dt_txt);
           const formattedDate = new Intl.DateTimeFormat('en-GB', {
             day: '2-digit',
@@ -22,7 +22,7 @@ const ForecastCards = () => {
             year: 'numeric',
           }).format(date);
           
-          const temp = (main.temp - 273.15).toFixed(1); // Convert from Kelvin to Celsius
+          const temp = (main.temp - 273.15).toFixed(1); 
           const iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@4x.png`;
 
           return (

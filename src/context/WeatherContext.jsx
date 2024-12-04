@@ -7,15 +7,20 @@ export const WeatherProvider = ({ children }) => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
 
-  const API_KEY = "acb815fbe0ce5cdd5aa848684413b58f";
+  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+  if (!API_KEY) {
+    console.error("API_KEY is not defined. Please check your .env file.");
+  }
 
   const fetchWeatherData = async (cityName) => {
     setLoading(true);
-    setError(null); // Reset error state before making a request
+    setError(null); 
+
     try {
-      // Step 1: Get geolocation data
+   
       const geoResponse = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${API_KEY}`
       );
@@ -34,7 +39,7 @@ export const WeatherProvider = ({ children }) => {
 
       const { lat, lon, name } = geoData[0];
 
-      // Step 2: Get weather forecast data
+ 
       const weatherResponse = await fetch(
         `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
       );
@@ -45,7 +50,7 @@ export const WeatherProvider = ({ children }) => {
 
       const weatherData = await weatherResponse.json();
 
-      // Filter the forecast to get a unique set of days (one entry per day)
+      
       const uniqueForecastDays = [];
       const fiveDayForecast = weatherData.list.filter((item) => {
         const date = new Date(item.dt_txt).getDate();
@@ -56,7 +61,6 @@ export const WeatherProvider = ({ children }) => {
         return false;
       });
 
-      // Set the current weather (the first item of the filtered forecast)
       setCurrentWeather({ city: name, ...fiveDayForecast[0] });
       setForecast(fiveDayForecast.slice(1));
     } catch (error) {
@@ -78,6 +82,8 @@ WeatherProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const useWeather = () => {
   return useContext(WeatherContext);
 };

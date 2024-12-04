@@ -180,6 +180,24 @@ h1 {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
+.sun-times {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.sun-times p {
+  font-size: 16px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sun-times svg {
+  margin-right: 8px;
+}
+
 .forecast-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
